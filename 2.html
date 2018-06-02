@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jsonp的一系列问题(一)</title>
+</head>
+<style>
+    html,body{
+        line-height: 1.5;
+    }
+    #m {
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        padding: 10px;
+        color: #ff4433;
+        font-size: 22px;
+        cursor: pointer;
+    }
+</style>
+<body>
+    <h2>jsonp的一系列问题(一)</h2>
+    <section>
+        <p>模拟一下面试</p>
+        <ul>
+            <li>
+                q：直接进入游戏吧
+            </li>
+            <li>
+                a：嗯~好的（啊咧？游戏？不应该是正题么~~~）
+            </li>
+            <li>
+                q：跨域了解过没（正 经 脸）
+            </li>
+            <li>
+                a：知道一点。
+            </li>
+            <li>
+                q：能简述下为何会有跨域，以及常见的解决方式么
+            </li>
+            <li>
+                a：OK！（我能说我没用过么）
+                跨域问题的出现：基于浏览器的同源策略，限制非同源站点间的数据请求，这样也是为了网站间的安全考虑。
+                至于什么是同源~当“协议、域名、端口”三者有任意一个不同时，都视为非同源。
+                常见的跨域解决方式：jsonp啦，iframe啦，window.name啦,还有h5的postMessage啦...等等(反正我都没用过...)
+            </li>
+            <li>
+                q：好的（说了这么多，貌似我也没这么用过 QMQ）...那既然你刚才提到jsonp，能详述下jsonp是什么以及原理和实现么
+            </li>
+            <li>
+                a：（就知道要问这个，还好我昨晚背了一遍，没吃过猪肉还没见猪跑么~~啧啧啧）
+                jsonp的实质：新建的script标签，将需要跨域请求的域名以及同接收端协商一致的回调函数名拼接好后，赋值给新建script标签的src并将其插入到页面中
+                <br>
+                例：<script src="www.baba.com?callbackName=geiMeSomeMoney"></script>
+                值得注意的是，提前需要在本地js文件中新建回调函数，供服务端调用（例：function geiMeSomeMoney(qian) { // 坐等银行到账短信 }）
+                <br>
+                至于为什么能以这种方式实现跨域请求
+                <br>
+                那是因为，同源策略只是限制的ajax请求，而ajax请求是基于XMLHttpRequest对象的使用，而jsonp实现的方式，在浏览器看来仅仅只是加载外部资源，就如同加载一张外链的图片，
+                一个外部CDN的脚本一样~不受同源策略的约束
+                <br>
+                也就是说页面上所有src属性都可以完成跨域请求（注意：这里说的是请求）
+            </li>
+            <li>
+                q：嗯。好的~既然你说页面所有的含src属性的标签都可以完成跨域请求，那么为什么jsonp使用了script标签呢？是不是可以更换为其他的标签呢？比如img？
+            </li>
+            <li>
+                a：（脑洞还挺大？莫不是个傻子~）emmmm.....（我怎么知道，大家都是这么用的啊~难道我会玩电脑还要晓得咋做半导体么~~~）
+                <br>
+                略微思索俩小时~（幸好我上过小学）不行滴~（兄dei）~
+                <br>
+                这就牵扯到为什么使用jsonp跨域请求的数据前端可以解析 ~ 以及 Content-Type是什么的问题~
+                <br>
+                先来说说Content-Type吧，这是个http首部字段，作用是表明主体内部对象的媒体类型。
+                举几个列子：
+                <br>
+                js资源请求的contentType：application/x-javascript或者application/javascript
+                <br>
+                img资源请求的contentTyp：image/gif或者application/octet-stream或者text/plain; charset=utf-8
+                <br>
+                so~明白了不？！
+                只有在content-Type表明请求主体对象是javascript的时候，返回的信息才可以像加载js文件一样被解析
+                <br>
+                也就是说html中不同标签的src属性其实隐性的标示的content-Type
+                <br>
+                至于~能不能使用img标签替代script标签完成跨域的数据交互，如果需求是只发送请求不需要返回数据是可以的~或者~你可以改变img标签的content-Type（反正我是没有试过~理论上是这样的~~~）
+
+            </li>
+            <li>
+                q：那~下一个问题，知道jsonp请求方式什么么
+            </li>
+            <li>
+                a：GET请求~所有的src请求方式都是GET请求
+            </li>
+            <li>
+                q：那么~知道jsonp请求是同步的还是异步的么
+            </li>
+            <li>
+                a：（懵逼Ing。。。）
+                <br>
+                万事问度娘~~~百度一下~~~
+                <br>
+                jsonp请求是异步的~并且，jquery封装的ajax中，当dataType值为‘jsonp’时，async的值无效（默认是true，当jsonp模式下，无论设置为true还是false，都是异步请求）
+            </li>
+            <li>
+                q：（嘿嘿~来了）
+                <br>
+                通常在写H5页面的时候，我们会将css文件在页面前面通过<link rel="stylesheet" href="">来引入，而将js文件放在页面的底部来加载，
+                这样做的目的一方面是在js执行的时候html已经加载完毕，不会出现找不到DOM的情况；另一方面，也可以防止阻塞页面加载。
+                <br>
+                那么，既然你刚才说jsonp是异步请求，而jsonp的本质是新建script标签；为什么我们写页面时将script标签放在前面会阻塞页面加载呢？
+            </li>
+            <li>
+                a：（继续懵逼Ing。。。）
+                <br>
+                （度娘出错了？！同步的？）
+                需要解释下两个问题（什么是同步or异步 / 加载or执行）
+                <br>
+                怎样定义同步还是异步：
+                运行时阻塞之后的代码执行就是同步 ~ 不是同步的，就是异步
+                <br>
+                加载和执行区别：
+                或许换成下载或者获取更好理解一点，下载文件是在于浏览器~浏览器在解析网站的时候，只要遇到需要获取外部资源的情况时，就会开始开出一个线程去执行下载任务，
+                所以浏览器下载文件是多线程的~并行的~异步的。
+                但是，
+                javascript的执行是单线程的~一个for循环的运行会阻塞之后的代码执行
+                <br>
+                ok~那么现在我们回到刚才提出的问题上~
+                我们将script标签放在页面首部~阻塞了页面的加载~是因为script代码的执行阻塞了页面的加载而不是文件下载阻塞了页面的加载。
+                <br>
+                而使用jsonp方式跨域请求并不会阻断之后的代码执行~所以，jsonp是异步请求
+            </li>
+            <li>
+                q：能用jsonp实现同步请求么？（笑脸~）
+            </li>
+            <li>
+                a：（jquery的ajax的async都无效了~还问这种问题？！  hey~bitch）
+                <br>
+                可以啊~把之后的代码都放在声明的callback函数中执行不就得了~（喏~你要的黑科技~）
+            </li>
+        </ul>
+    </section>
+    <!-- T   o   M -->
+    <div id="m">
+        M
+    </div>
+    <script>
+        var m = document.getElementById('m');
+        var timer;
+        m.onclick = function() {
+            location.href = 'hellomotoi.github.io/Blog/main.html';
+        }
+        window.onscroll = function() {
+            m.style.display = 'none';
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                m.style.display = 'block';
+            },2000)
+        }
+    </script>
+</body>
+</html>
