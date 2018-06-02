@@ -10,20 +10,29 @@
     html,body{
         line-height: 1.5;
     }
+    #m {
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        padding: 10px;
+        color: #ff4433;
+        font-size: 22px;
+        cursor: pointer;
+    }
 </style>
 <body>
     <h2>写在前面的话</h2>
     <section>
-        <h3>需要说明的几个问题</h3>
+        <h3>需要提前说的几个问题</h3>
         <ul>
             <li>
                 1.为什么写这个
             </li>
             <li>
-                2.为什么在这写
+                2.为什么在这儿(github)写
             </li>
             <li>
-                3.为什么在这写
+                3.写了给谁看
             </li>
             <li>
                 4.from入门to放弃
@@ -34,22 +43,50 @@
                 <li>
                     Answer :
                 </li>
+
                 <li>
-                    1.记录开发中的点点滴滴,总得留下点什么
-                </li>
-                <li>
-                    2.各大博客论坛需要审核...审啥审啊,慢的一批
-                </li>
-                <li>
-                    3.写的少了给自己看,写的多了就是给别人看的,归根结底还是给自己看的
-                </li>
-                <li>
-                    4.如果是工作期满一年的那个星期天,我可以很笃定的说~"我已经入门了..."
+                    1.记录开发中的点滴;
                     <br>
-                    现如今又过了一年,我却不敢那么肯定了~"真的入门了?!!come on!!!___qwq"
+                    工作两年多,回想起来总觉的应该留下点什么...趁自己还有没放弃(哭笑脸)
+                </li>
+
+                <li>
+                    2.各大博客论坛需要审核...审啥审啊,慢的一批,本来心血来潮想写篇文章,整了半天还得审核~艾玛~溜了溜了...
+                </li>
+
+                <li>
+                    3.写的少了给自己看,写的多了就是给别人看的,归根结底还是给自己看的...再说,给谁看啊~谁看啊-_-|||
+                </li>
+
+                <li>
+                    4.如果这个问题放在工作期刚满一年的那个星期天,我可以很笃定的说~"我已经入门了..."
+                    <br>
+                    现如今又过了一年,我却不敢那么肯定了~"真的入门了?!! come on!! 图样图森破 qwq"
+                    <br>
+                    至于说放弃...
+                    <p>(我得单开一个标签来说这个事)</p>
+                    真的烦~但还为时尚早
                 </li>
             </ul>
         </section>
     </section>
+    <!-- T   o   M -->
+    <div id="m">
+        M
+    </div>
+    <script>
+        var m = document.getElementById('m');
+        var timer;
+        m.onclick = function() {
+            location.href = 'https://hellomotoi.github.io/Blog/main.html';
+        }
+        window.onscroll = function() {
+            m.style.display = 'none';
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                m.style.display = 'block';
+            },2000)
+        }
+    </script>
 </body>
 </html>

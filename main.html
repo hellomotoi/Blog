@@ -9,9 +9,20 @@
 <style>
     html,body{
         line-height: 1.5;
+        height: 2000px;
+    }
+    #t {
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        padding: 10px;
+        color: #ff4433;
+        font-size: 22px;
+        cursor: pointer;
     }
 </style>
 <body>
+    <!-- 2018/6/1 -->
     <h1>前端开发</h1>
     <p>从入门到放弃</p>
     <ul>
@@ -21,6 +32,27 @@
         <li>
             <a href="./1.html">盒子模型</a>
         </li>
+        <li>
+            <a href="./2.html">jsonp的一系列问题(一)</a>
+        </li>
     </ul>
+    <!-- T   o   T   op -->
+    <div id="t">
+        T
+    </div>
+    <script>
+        var t = document.getElementById('t');
+        var timer;
+        t.onclick = function() {
+            window.scrollTo(0,0);
+        }
+        window.onscroll = function() {
+            t.style.display = 'none';
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                t.style.display = 'block';
+            },2000)
+        }
+    </script>
 </body>
 </html>
