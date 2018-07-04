@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>也来说说原型链</title>
+</head>
+<style>
+    html,body{
+        line-height: 1.5;
+    }
+    #m {
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        padding: 10px;
+        color: #ff4433;
+        font-size: 22px;
+        cursor: pointer;
+    }
+    img {
+        display: block;
+        width: 100%;
+    }
+</style>
+<body>
+    <h2>也来说说原型链</h2>
+    <section>
+        <p>
+           总结：对象的__proto__属性指向其构造函数的原型；由此对象可访问构造函数原型上的方法；
+           <br>
+           <span style="color:#ff4433;">是的！你没看错，一上来就总结~后面的其实都不用看了~</span>
+        </p>
+        <br>
+        <img src="./原型链.jpg" alt="原型链">
+        <p>网上常见的javascript原型链描述图</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <p>高能预警 ////// 非战斗人员赶紧撤离</p>
+        <img src="./原型链code自绘00.png" alt="自绘图">
+        <p>是的，这就是javascript所谓的原型链...接下来我们用代码来验证一下</p>
+        <img src="./原型链code验证01.png" alt="">
+        <p>这么来看，上图的指向倒是没有什么问题，但是Object和Function它俩到底是咋回事...</p>
+        <p>依照开篇第一句话的总结，Object对象应该是Function的实例才对</p>
+        <p>鲁迅有句话说过~实践是检验真理的唯一标准~~~欧了...</p>
+        <img src="./原型链code验证02.png" alt="">
+        <p>这么一来，看来确实是这么一回事...</p>
+        <p>
+            总结：对象的__proto__属性指向其构造函数的原型；由此对象可访问构造函数原型上的方法；
+            <br>
+            <span style="color:#ff4433;">完结！撒花~~~</span>
+        </p>
+        <p>
+            some Question：
+            <br>
+            <xmp>
+                // test one
+                var fun = function () {
+
+                };
+            
+                fun.prototype = {
+                    info: {
+                        name: 'peter',
+                        age: 25
+                    }
+                };
+            
+                var a = new fun();
+                var b = new fun();
+            
+                a.info.name = 'jack';
+                b.info.name = 'tom';
+                console.log(a.info.name) //tom
+                console.log(b.info.name) //tom
+                
+                // test two
+                var fun = function () {
+            
+                }
+            
+                fun.prototype = {
+                    name: 'peter',
+                    age: 25
+                }
+            
+                var a = new fun();
+                var b = new fun();
+            
+                a.name = 'jack';
+                b.name = 'tom';
+                console.log(a.name) //jack
+                console.log(b.name) //tom
+            </xmp>
+        </p>
+        <p>自己给自己说明下吧~别到时候自己都忘了~那就熄火了</p>
+        <p>
+            第一： 构造器原型对于实例化对象来说是共享的，只要修改构造器原型，所有实例化对象的相关参数均回改变；
+            <br>
+            第二： 实例化对象在进行属性查找伙食方法调用时，首先查找的是自身属性以及方法（也就是构造器的属性和方法，当然各个实例化对象也可自行修改自身属性以及方法，包括增删改，不会影响其它势力实例对象以及原构造器），
+            <br>
+            之后才会去构造器原型中查找
+            <br>
+            so...test one修改了构造器原型，所以所有的实例化对象均受到波及；test two仅仅只是修改实例自身的属性而已（同样的属性和方法，实例自身会屏蔽构造器原型的同名属性和方法，但是可以查看到__proto__）；
+        </p>
+    </section>
+    <!-- T   o   M -->
+    <div id="m">
+        M
+    </div>
+    <script>
+        var m = document.getElementById('m');
+        var timer;
+        m.onclick = function() {
+            location.href = 'https://hellomotoi.github.io/Blog/main.html';
+        }
+        window.onscroll = function() {
+            m.style.display = 'none';
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                m.style.display = 'block';
+            },2000)
+        }
+    </script>
+</body>
+</html>
