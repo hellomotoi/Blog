@@ -74,8 +74,8 @@
             
                 a.info.name = 'jack';
                 b.info.name = 'tom';
-                console.log(a.info.name) //tom
-                console.log(b.info.name) //tom
+                console.log(a.info.name)//tom
+                console.log(b.info.name)//tom
                 
                 // test two
                 var fun = function () {
@@ -104,7 +104,7 @@
             <br>
             之后才会去构造器原型中查找
             <br>
-            so...test one修改了构造器原型，所以所有的实例化对象均受到波及；test two仅仅只是修改实例自身的属性而已（同样的属性和方法，实例自身会屏蔽构造器原型的同名属性和方法，但是可以查看到__proto__）；
+            so...test one修改了构造器原型，所以所有的实例化对象均受到波及；test two仅仅只是修改实例自身的属性而已（同样的属性和方法，实例自身会屏蔽构造器原型的同名属性和方法，但是可以通过__proto__属性的打印查看到）；
         </p>
     </section>
     <!-- T   o   M -->
